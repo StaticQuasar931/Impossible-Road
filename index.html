@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impossible Road | StaticQuasar931 Unblocked Games</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="startScreen">
+      <div class="start-card">
+        <p class="eyebrow">StaticQuasar931 Unblocked Games</p>
+        <h1>Impossible Road</h1>
+        <p class="subtitle">Tilt, drift, and chase the numbered gates down the endless ribbon.</p>
+        <div class="start-controls">
+          <button id="playButton">Play</button>
+          <button id="rerollSeed" class="ghost">New Seed</button>
+        </div>
+        <div class="start-meta">
+          <span id="startSeed">Seed: --</span>
+          <span>Desktop: A / D or ← / → · Space pause · 1 slow-mo · 2 free cam · 3 new seed</span>
+          <span>Mobile: Tap arrows or tilt after calibration</span>
+        </div>
+      </div>
+    </div>
+    <div id="overlay">
+      <header>
+        <h1>Impossible Road <span>| StaticQuasar931 Unblocked Games</span></h1>
+        <div id="seedDisplay">Seed: --</div>
+      </header>
+      <section id="hud">
+        <div class="stat"><label>Score</label><span id="scoreValue">0</span></div>
+        <div class="stat"><label>Best</label><span id="bestValue">0</span></div>
+        <div class="stat"><label>Speed</label><span id="speedValue">0</span></div>
+        <div class="stat"><label>Status</label><span id="statusValue">Ready</span></div>
+      </section>
+      <section id="controlsTooltip">
+        <p><strong>Desktop:</strong> A / D or ← / → to steer · Space to pause · 1 slow motion · 2 free camera · 3 new seed</p>
+        <p><strong>Mobile:</strong> Tap buttons or tilt (calibrate in settings)</p>
+      </section>
+      <section id="leaderboard">
+        <h2>Local Leaderboard</h2>
+        <div class="entry">
+          <label for="playerName">Name</label>
+          <input id="playerName" maxlength="12" placeholder="Enter name" />
+          <button id="saveName">Save</button>
+        </div>
+        <ol id="leaderboardList"></ol>
+      </section>
+      <section id="settingsPanel">
+        <h2>Settings</h2>
+        <div class="setting">
+          <label for="tiltSensitivity">Tilt sensitivity</label>
+          <input type="range" id="tiltSensitivity" min="0.1" max="3" step="0.1" value="1" />
+        </div>
+        <div class="setting">
+          <label for="buttonSize">Button size</label>
+          <input type="range" id="buttonSize" min="0.8" max="1.8" step="0.1" value="1" />
+        </div>
+        <div class="setting">
+          <label for="themeSelect">Theme</label>
+          <select id="themeSelect"></select>
+        </div>
+        <div class="setting">
+          <label for="volumeControl">Audio volume</label>
+          <input type="range" id="volumeControl" min="0" max="1" step="0.05" value="0.6" />
+        </div>
+        <div class="setting">
+          <button id="calibrateTilt">Calibrate tilt</button>
+          <button id="resetProgress">Reset progress</button>
+        </div>
+      </section>
+      <button id="pauseButton">Pause</button>
+    </div>
+    <div id="mobileControls">
+      <button class="control" id="leftButton">◀</button>
+      <div id="tiltStatus">Tilt: off</div>
+      <button class="control" id="rightButton">▶</button>
+    </div>
+  </div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
