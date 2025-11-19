@@ -1,11 +1,11 @@
 :root {
   color-scheme: dark;
-  --bg: radial-gradient(circle at top, #0d1b2a 0%, #040608 60%, #000 100%);
-  --panel-bg: rgba(8, 15, 24, 0.72);
-  --panel-border: rgba(105, 165, 255, 0.35);
-  --accent: #73edff;
-  --accent-2: #5f9eff;
-  font-family: 'Segoe UI', Roboto, sans-serif;
+  --bg: radial-gradient(circle at 40% -10%, #0a1022 0%, #050712 35%, #02040a 70%, #000 100%);
+  --panel-bg: rgba(7, 12, 24, 0.8);
+  --panel-border: rgba(120, 166, 255, 0.3);
+  --accent: #6cf3ff;
+  --accent-2: #8d66ff;
+  font-family: 'Segoe UI', Roboto, 'Inter', sans-serif;
 }
 
 * {
@@ -26,6 +26,94 @@ body, html {
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+#startScreen {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, rgba(7, 10, 18, 0.94) 0%, rgba(9, 14, 28, 0.85) 50%, rgba(4, 6, 12, 0.94) 100%);
+  backdrop-filter: blur(6px);
+  z-index: 10;
+}
+
+.start-card {
+  max-width: 560px;
+  width: min(92vw, 560px);
+  background: radial-gradient(circle at 30% 20%, rgba(108, 243, 255, 0.18), rgba(0, 0, 0, 0))
+      , radial-gradient(circle at 80% 10%, rgba(141, 102, 255, 0.18), rgba(0, 0, 0, 0))
+      , rgba(6, 9, 18, 0.9);
+  border: 1px solid rgba(130, 170, 255, 0.35);
+  border-radius: 18px;
+  padding: clamp(1.1rem, 4vw, 1.6rem);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+  text-align: center;
+}
+
+.start-card h1 {
+  margin: 0 0 0.3rem;
+  font-size: clamp(2.4rem, 6vw, 3.2rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.start-card .subtitle {
+  margin: 0 0 1rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.start-card .eyebrow {
+  letter-spacing: 0.16em;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin: 0.1rem 0 0.6rem;
+}
+
+.start-controls {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 0.8rem;
+}
+
+.start-controls button {
+  cursor: pointer;
+  border-radius: 999px;
+  border: none;
+  padding: 0.65rem 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #02040a;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 12px 40px rgba(120, 166, 255, 0.4);
+  transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+
+.start-controls .ghost {
+  background: transparent;
+  color: #d0e4ff;
+  border: 1px solid rgba(145, 178, 255, 0.5);
+  box-shadow: none;
+}
+
+.start-controls button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 42px rgba(120, 166, 255, 0.45);
+}
+
+.start-meta {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.start-meta span:first-child {
+  color: var(--accent);
+  font-weight: 600;
 }
 
 canvas {
@@ -211,18 +299,6 @@ header h1 span {
   opacity: 0.8;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-}
-
-#touchStart {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(2, 5, 10, 0.82);
-  font-size: clamp(1.4rem, 4vw, 2.2rem);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  pointer-events: auto;
 }
 
 .hidden {

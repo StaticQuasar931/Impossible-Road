@@ -36,13 +36,13 @@ function hashString(str) {
 // === Theme definitions =====================================================
 const THEMES = [
   {
-    name: 'Nebula Glass',
-    road: '#1d85ff',
-    roadEdge: '#8fe8ff',
-    gate: '#ff9df5',
-    ball: '#9df0ff',
-    trail: '#66d9ff',
-    sky: ['#03030a', '#0a1d35'],
+    name: 'Impossible Neon',
+    road: '#125cff',
+    roadEdge: '#8fe4ff',
+    gate: '#ff7ae3',
+    ball: '#f6fbff',
+    trail: '#6be3ff',
+    sky: ['#050515', '#0b1c48'],
   },
   {
     name: 'Solar Bloom',
@@ -156,7 +156,10 @@ function updateSteerTarget(value) {
 
 const leftButton = document.getElementById('leftButton');
 const rightButton = document.getElementById('rightButton');
-const touchStartOverlay = document.getElementById('touchStart');
+const startScreen = document.getElementById('startScreen');
+const playButton = document.getElementById('playButton');
+const rerollSeedButton = document.getElementById('rerollSeed');
+const startSeedLabel = document.getElementById('startSeed');
 let awaitingFirstInteraction = true;
 
 [leftButton, rightButton].forEach((btn, index) => {
@@ -829,6 +832,8 @@ orbitControls.enableDamping = true;
 orbitControls.maxDistance = 1000;
 freeCamera.position.set(15, 15, 15);
 freeCamera.lookAt(0, 0, 0);
+chaseCamera.position.set(0, 12, 22);
+chaseCamera.lookAt(0, 8, 0);
 
 const cameraRig = new THREE.Object3D();
 const cameraTarget = new THREE.Vector3();
@@ -1008,8 +1013,15 @@ const gameState = {
   runActive: false,
 };
 
+function updateSeedLabels() {
+  const seedText = `Seed: ${gameState.seed}`;
+  seedDisplay.textContent = seedText;
+  startSeedLabel.textContent = seedText;
+}
+
 function regenerateSeed() {
   gameState.seed = Math.floor(Math.random() * 0xffffffff);
+  updateSeedLabels();
   startRun();
   setStatus('New track seeded');
 }
@@ -1027,6 +1039,7 @@ function applyTheme(theme) {
 }
 
 function startRun() {
+  hideStartScreen();
   gatePool.reset();
   gameState.gatesInPlay = [];
   gameState.score = 0;
@@ -1035,12 +1048,13 @@ function startRun() {
   gameState.nextGateDistance = 55;
   inputState.slowMotion = false;
   gameState.runActive = true;
+  inputState.paused = false;
   updateScore(0);
   track.reset(gameState.seed);
   player.reset();
   track.ensureLength(player.distance + TRACK_VISIBLE_LENGTH);
   track.rebuildGeometry();
-  seedDisplay.textContent = `Seed: ${gameState.seed}`;
+  updateSeedLabels();
   spawnInitialGates();
   setStatus('Rolling…');
 }
@@ -1147,21 +1161,40 @@ function togglePause() {
   setStatus(inputState.paused ? 'Paused' : 'Resumed');
 }
 
-// === Touch overlay to start ===============================================
-function hideTouchOverlay() {
-  touchStartOverlay.classList.add('hidden');
+// === Start screen + play button ============================================
+function hideStartScreen() {
+  startScreen.classList.add('hidden');
 }
 
-touchStartOverlay.addEventListener('pointerdown', () => {
-  if (awaitingFirstInteraction) {
-    awaitingFirstInteraction = false;
-    initAudio();
-    hideTouchOverlay();
-    if (inputState.isMobile) attachTilt();
-    startRun();
-  } else {
-    hideTouchOverlay();
-  }
+function showStartScreen() {
+  updateSeedLabels();
+  startScreen.classList.remove('hidden');
+  gameState.runActive = false;
+  setStatus('Ready to roll');
+}
+
+function beginPlay() {
+  awaitingFirstInteraction = false;
+  hideStartScreen();
+  initAudio();
+  if (inputState.isMobile && !inputState.tiltActive) attachTilt();
+  startRun();
+}
+
+playButton.addEventListener('click', (ev) => {
+  ev.preventDefault();
+  beginPlay();
+});
+
+startScreen.addEventListener('pointerdown', (ev) => {
+  if (ev.target === startScreen) beginPlay();
+});
+
+rerollSeedButton.addEventListener('click', (ev) => {
+  ev.stopPropagation();
+  gameState.seed = Math.floor(Math.random() * 0xffffffff);
+  updateSeedLabels();
+  setStatus('Seed staged – press Play');
 });
 
 // === Window resize ========================================================
@@ -1233,6 +1266,10 @@ function animate(now) {
   requestAnimationFrame(animate);
   const delta = (now - lastTime) / 1000;
   lastTime = now;
+  if (!gameState.runActive) {
+    renderer.render(scene, chaseCamera);
+    return;
+  }
   if (inputState.paused) {
     renderer.render(scene, chaseCamera);
     return;
@@ -1279,13 +1316,9 @@ function updateTrail() {
 
 // === Initialization =======================================================
 applyTheme(THEMES[initialThemeIndex]);
-startRun();
+updateSeedLabels();
+showStartScreen();
 requestAnimationFrame(animate);
-
-if (!inputState.isMobile) {
-  awaitingFirstInteraction = false;
-  hideTouchOverlay();
-}
 
 // === Device orientation baseline tracking =================================
 window.addEventListener('deviceorientation', (ev) => {
